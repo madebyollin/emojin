@@ -1,103 +1,104 @@
 // Customizations and utilities
 Array.prototype.randomElement = function(){
-  return this[Math.floor(Math.random()*this.length)];
+  return this[Math.floor(Math.random() * this.length)];
 }
 
-function debug(args, rating) {
-    var level = 0;
-    if (!rating || (rating <= level)) {
+function debug(args, rating = 0) {
+    const level = 0;
+    if (rating < level) {
         console.log(args);
     }
 }
 
-// ----------------
-// Grammar Class
-// ----------------
+// A context-free grammar with functions to generate random, valid instances
+// of the language
+class Grammar {
+    constructor(grammarJSON, nameOfInitialSymbol) {
+        // Throw exception if nameOfInitialSymbol is not present in grammar
+        if (!(nameOfInitialSymbol in grammarJSON)) {
+            throw nameOfInitialSymbol + " must be a valid non-terminal in the grammar for it to be usable";
+        }
 
-// Creates a grammar object from a JSON containing a dictionary mapping non-terminals to expressions or non-terminals
-// The base symbol must be "_"
-var Grammar = function(grammarJSON, nameOfInitialSymbol) {
-    this.grammarJSON = grammarJSON;
-    this.initial = nameOfInitialSymbol;
-    if (!grammarJSON[this.initial]) {
-        throw nameOfInitialSymbol + " must be a valid non-terminal in the grammar for it to be usable";
+        this.grammarJSON = grammarJSON;
+        this.initial = nameOfInitialSymbol;
+    }
+
+    generateOne(current = this.initial) {
+        debug(`generateOne(${current})`, 1);
+
+        // if the current token is already a non-terminal, return it
+        if (!(current in this.grammarJSON)) {
+            return current;
+        }
+
+        // otherwise, pick a random expresssion for the current token
+        const options = this.grammarJSON[current];
+        const option = options.randomElement();
+        debug(`\tselected ${option} from ${options}`, 1);
+
+        // split it up, recurse on each part, and concatenate the results
+        const parts = option.split(" ");
+        let result = this.generateOne(parts[0]);
+            for (let i = 1; i < parts.length; i++) {
+               result += " " + this.generateOne(parts[i]);
+            }
+        return result;
+    }
+
+    generate(howMany) {
+        const strings = [];
+        for (let i = 0; i < howMany; i++) {
+            const result = this.generateOne();
+            debug(`Received generated string ${result} from grammar`);
+            strings.push(result);
+        }
+        return strings;
     }
 }
 
-Grammar.prototype.generateOne = function(string) {
-    var current = string;
-    if (typeof current == 'undefined') {
-        current = this.initial;
-    }
-    debug("generateOne(" + current + "):", 1);
-
-    // if the current token is already a non-terminal, return it
-    if (!this.contains(current)) {
-        return current;
-    }
-    //otherwise, pick a random value, split it up, recurse and concatenate
-    var options = this.grammarJSON[current];
-    var option = options.randomElement();
-    debug("\tselected " + option + " from " + options, 1);
-    var parts = option.split(" ");
-
-    var result = this.generateOne(parts[0]);
-    for (var i = 1; i < parts.length; i++) {
-        result += " " + this.generateOne(parts[i]);
+// Generates list items containing countInput.value instances from the given grammar
+// and appends them to displayContainer
+class EmojiDisplayer {
+    constructor(grammar, countInput, displayContainer) {
+        if (!( grammar && countInput && displayContainer)) {
+            throw "arguments to constructor cannot be undefined";
+        }
+        this.generator = grammar;
+        this.howManyInput = countInput;
+        this.displayContainer = displayContainer;
     }
 
-    return result;
-}
-
-Grammar.prototype.contains = function(string) {
-    return !(typeof this.grammarJSON[string] == 'undefined');
-}
-
-Grammar.prototype.generate = function(howMany) {
-    var strings = [];
-    for (var i = 0; i < howMany; i++) {
-        strings[i] = this.generateOne();
+    display() {
+        this.clear();
+        debug(`Generating ${this.howMany()} emoji`);
+        const emoji = this.generator.generate(this.howMany());
+        debug(`Displaying the following emoji: ${emoji}`);
+        for (let i = 0; i < emoji.length; i++) {
+            debug("----------------", 1);
+            const li = document.createElement("li");
+            li.textContent = emoji[i];
+            this.displayContainer.appendChild(li);
+        }
     }
-    return strings;
-}
 
-// ----------------
-// Displayer Class
-// ----------------
+    howMany() {
+        return this.howManyInput.value;
+    }
 
-var emojiDisplayer = function(grammar, countInput, displayContainer) {
-    this.generator = grammar;
-    this.howManyInput = countInput;
-    this.displayContainer = displayContainer;
-}
-
-emojiDisplayer.prototype.display = function() {
-    this.clear();
-    var emoji = this.generator.generate(this.howManyInput.value);
-    for (var i = 0; i < emoji.length; i++) {
-        debug("----------------", 1);
-        var li = document.createElement("li");
-        li.textContent = emoji[i];
-        this.displayContainer.appendChild(li);
+    clear() {
+        let current = this.displayContainer.firstChild;
+        while (current) {
+            this.displayContainer.removeChild(current);
+            current = this.displayContainer.firstChild;
+        }
     }
 }
 
-emojiDisplayer.prototype.clear = function() {
-    var current = this.displayContainer.firstChild;
-    while (current) {
-        this.displayContainer.removeChild(current);
-        current = this.displayContainer.firstChild;
-    }
-}
-
-// ----------------
 // Setup
-// ----------------
 
 function init() {
     // Configuration
-    debug("Running init...")
-    var displayer = new emojiDisplayer(
+    const displayer = new EmojiDisplayer(
         new Grammar({
             "emoji" : ["eh" , "et" , "ef"],
             "eh" : ["( ef )", "[ ef ]", "༼ ef  ༽"],
@@ -110,14 +111,13 @@ function init() {
         document.getElementById("howMany"),
         document.getElementById("emoji")
     );
-    debug("displayer is..." + displayer)
-    debug("displayer.generator is..." + displayer.generator);
-    debug("displayer.howManyInput is..." + displayer.howManyInput);
-    debug("displayer.displayContainer is..." + displayer.displayContainer);
+
     // Event binding
     document.getElementById("generate").addEventListener("click", function() {
         displayer.display();
     });
+
+    // Easter egg display for maximum value of the input field
     document.getElementById("howMany").addEventListener("input", function() {
         if (this.value == this.max) {
             document.getElementById("soManyMessage").style.display = "block";
@@ -125,10 +125,8 @@ function init() {
             document.getElementById("soManyMessage").style.display = "none";
         }
     });
-    // <div id="soMany">
-    //
-    // </div>
-    // Generate the first emoji
+
+    // Initial emoji generation
     displayer.display();
 }
 
