@@ -48,7 +48,11 @@ class Grammar {
     generate(howMany) {
         const strings = [];
         for (let i = 0; i < howMany; i++) {
-            const result = this.generateOne();
+            let result = this.generateOne();
+            while (strings.includes(result)) {
+                debug(`skipped duplicate of ${result}`);
+                result = this.generateOne();
+            }
             debug(`Received generated string ${result} from grammar`);
             strings.push(result);
         }
@@ -100,13 +104,25 @@ function init() {
     // Configuration
     const displayer = new GrammarDisplayer(
         new Grammar({
-            "emoji" : ["eh" , "et" , "ef"],
+            "emoji" : ["eh" , "eu", "et" , "ef"],
             "eh" : ["( ef )", "[ ef ]", "༼ ef  ༽"],
-            "et" : ["el eh er", "d( ef )b", "b( ef )d", "(っ ef ς)"],
-            "ef" : ["^ em ^", "• em •", "o em o", "O em O", "> em <", "x em x", "' em '", "; em ;", ": em :", "- em -", "* em *", "´ em ´", "~ em ~", "• em <", "> em •", "ಠ em ಠ", "¬ em ¬", "￣ em ￣", "ಥ em ಥ", "ʘ em ʘ", "◎  em ◎", "•́ em •̀", "T em T", "⌒ em ⌒", " ˃̶ em ˂̶", "ര em ര", "⇀ em ⇀", "╥ em ╥", "´ em ´", "˘ em ˘", "❛ em ❛", "৺ em ৺", "୨ em ୧"],
-            "em" : ["_", ".", "__", "д", "w", "-", ",", "////", "皿", "益", "人", "﹏", "ㅿ", "□", "ʖ", "ᴗ", "ㅂ", "▂", "ᴥ", "〜", "∀", "ﾛ", "▿▿▿▿", "ヮ", "ڡ", "︿", "‸", "ϖ", "˫", "֊", "෴"],
+            "eu": ["el eh er"],
+            "et" : ["d( ef )b", "(╯ ef )╯", "(っ ef ς)", "ᕕ( ef )ᕗ","(つ ef )つ",
+                    "ᕦ( ef )ᕤ", "(づ ef )づ"],
+            "ef" : ["^ em ^", "• em •", "o em o", "O em O", "> em <", "x em x",
+                    "' em '", "; em ;", " ̿ em  ̿", "- em -", "* em *", "´ em ´",
+                    "~ em ~", "• em <", "> em •", "ಠ em ಠ", "¬ em ¬", "￣ em ￣",
+                    "ಥ em ಥ", "ʘ em ʘ", "◎  em ◎", "•́ em •̀", "T em T", "⌒ em ⌒",
+                    " ˃̶ em ˂̶", "ര em ര", "⇀ em ⇀", "╥ em ╥", "´ em ´",
+                    "˘ em ˘", "❛ em ❛", "৺ em ৺", "୨ em ୧", "눈 em 눈",
+                    "° em °", "⌐■ em ■", "≖ em ≖", "•̀ em •́", "◕ em ◕", "⊙ em ☉",
+                    "ᗒ em ᗕ", " ͒  em ͒  ", "´･ em ･`"],
+            "em" : ["_", ".", "__", "д", "ω", "-", ",", "////", "皿", "益", "人",
+                    "﹏", "ㅿ", "□", "ʖ", "ᴗ", "ㅂ", "▂", "ᴥ", "〜", "∀", "ﾛ",
+                    "▿▿▿▿", "ヮ", "ڡ", "︿", "‸", "ϖ", "˫", "֊", "෴", "³", "ᗣ"],
             "el" : ["\\", "c", "┗", "ヽ", "〜", "┌", "ヾ", "＼"],
-            "er" : ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧", "乂 eh ﾉ", "❤ eh"]
+            "er" : ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧",
+                    "乂 eh ﾉ", "❤ eh", "و"]
         }, "emoji"),
         document.getElementById("howMany"),
         document.getElementById("display")
