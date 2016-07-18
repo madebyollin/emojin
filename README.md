@@ -1,5 +1,8 @@
 # Emojin
 A simple client-side kaomoji generator using a context-free grammar.
-Still learning a lot about Javascript so feedback is appreciated!
+
+![Screenshot](http://i.imgur.com/jD48BT1.png "Emojin in action")
 
 [Try it out](http://emojin.xyz/)
+
+I'm still learning a lot about Javascript.  Feedback is appreciated!
