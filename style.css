@@ -65,7 +65,7 @@ a.button input {
 }
 
 
-#emoji {
+#display {
     top: 20vh;
     margin: auto;
     width: 40%;
@@ -81,14 +81,14 @@ a.button input {
     box-shadow: 0px 0px 32px 32px white;
 }
 
-#emoji li {
+#display li {
     margin: 0;
     list-style-type: none;
     height: 3em;
     line-height: 3em;
     border-top: 1px solid hsl(0,0%,95%);
 }
-#emoji li:first-child {
+#display li:first-child {
     border: none;
 }
 

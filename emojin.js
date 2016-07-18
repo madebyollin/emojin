@@ -58,7 +58,7 @@ class Grammar {
 
 // Generates list items containing countInput.value instances from the given grammar
 // and appends them to displayContainer
-class EmojiDisplayer {
+class GrammarDisplayer {
     constructor(grammar, countInput, displayContainer) {
         if (!( grammar && countInput && displayContainer)) {
             throw "arguments to constructor cannot be undefined";
@@ -70,13 +70,13 @@ class EmojiDisplayer {
 
     display() {
         this.clear();
-        debug(`Generating ${this.howMany()} emoji`);
-        const emoji = this.generator.generate(this.howMany());
-        debug(`Displaying the following emoji: ${emoji}`);
-        for (let i = 0; i < emoji.length; i++) {
+        debug(`Generating ${this.howMany()} strings`);
+        const strings = this.generator.generate(this.howMany());
+        debug(`Displaying the following strings: ${strings}`);
+        for (let i = 0; i < strings.length; i++) {
             debug("----------------", 1);
             const li = document.createElement("li");
-            li.textContent = emoji[i];
+            li.textContent = strings[i];
             this.displayContainer.appendChild(li);
         }
     }
@@ -98,7 +98,7 @@ class EmojiDisplayer {
 
 function init() {
     // Configuration
-    const displayer = new EmojiDisplayer(
+    const displayer = new GrammarDisplayer(
         new Grammar({
             "emoji" : ["eh" , "et" , "ef"],
             "eh" : ["( ef )", "[ ef ]", "༼ ef  ༽"],
@@ -109,7 +109,7 @@ function init() {
             "er" : ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧", "乂 eh ﾉ", "❤ eh"]
         }, "emoji"),
         document.getElementById("howMany"),
-        document.getElementById("emoji")
+        document.getElementById("display")
     );
 
     // Event binding
@@ -126,7 +126,7 @@ function init() {
         }
     });
 
-    // Initial emoji generation
+    // Initial generation
     displayer.display();
 }
 
