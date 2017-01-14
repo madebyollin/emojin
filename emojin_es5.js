@@ -1,11 +1,30 @@
 "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function() {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+    return function(Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) defineProperties(Constructor, staticProps);
+        return Constructor;
+    };
+}();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
 
 // Customizations and utilities
-Array.prototype.randomElement = function () {
+Array.prototype.randomElement = function() {
     return this[Math.floor(Math.random() * this.length)];
 };
 
@@ -21,7 +40,7 @@ function debug(args) {
 // A context-free grammar with functions to generate random, valid instances
 // of the language
 
-var Grammar = function () {
+var Grammar = function() {
     function Grammar(grammarJSON, nameOfInitialSymbol) {
         _classCallCheck(this, Grammar);
 
@@ -83,7 +102,7 @@ var Grammar = function () {
 // and appends them to displayContainer
 
 
-var GrammarDisplayer = function () {
+var GrammarDisplayer = function() {
     function GrammarDisplayer(grammar, countInput, displayContainer) {
         _classCallCheck(this, GrammarDisplayer);
 
@@ -133,23 +152,38 @@ var GrammarDisplayer = function () {
 function init() {
     // Configuration
     var displayer = new GrammarDisplayer(new Grammar({
-        "emoji": ["eh", "eu", "et", "ef"],
-        "eh": ["( ef )", "[ ef ]", "༼ ef  ༽"],
-        "eu": ["el eh er"],
-        "et": ["d( ef )b", "(╯ ef )╯", "(っ ef ς)", "ᕕ( ef )ᕗ", "(つ ef )つ", "ᕦ( ef )ᕤ", "(づ ef )づ"],
-        "ef": ["^ em ^", "• em •", "o em o", "O em O", "> em <", "x em x", "' em '", "; em ;", " ̿ em  ̿", "- em -", "* em *", "´ em ´", "~ em ~", "• em <", "> em •", "ಠ em ಠ", "¬ em ¬", "￣ em ￣", "ಥ em ಥ", "ʘ em ʘ", "◎  em ◎", "•́ em •̀", "T em T", "⌒ em ⌒", " ˃̶ em ˂̶", "ര em ര", "⇀ em ⇀", "╥ em ╥", "´ em ´", "˘ em ˘", "❛ em ❛", "৺ em ৺", "୨ em ୧", "눈 em 눈", "° em °", "⌐■ em ■", "≖ em ≖", "•̀ em •́", "◕ em ◕", "⊙ em ☉", "ᗒ em ᗕ", " ͒  em ͒  ", "´･ em ･`"],
-        "em": ["_", ".", "__", "д", "ω", "-", ",", "////", "皿", "益", "人", "﹏", "ㅿ", "□", "ʖ", "ᴗ", "ㅂ", "▂", "ᴥ", "〜", "∀", "ﾛ", "▿▿▿▿", "ヮ", "ڡ", "︿", "‸", "ϖ", "˫", "֊", "෴", "³", "ᗣ"],
-        "el": ["\\", "c", "┗", "ヽ", "〜", "┌", "ヾ", "＼"],
-        "er": ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧", "乂 eh ﾉ", "❤ eh", "و"]
-    }, "emoji"), document.getElementById("howMany"), document.getElementById("display"));
+        "kaomoji": ["head", "bracketed_head", "symmetrically_armed_head", "face"],
+        "head": ["( face )", "[ face ]", "༼ face  ༽"],
+        "bracketed_head": ["left_arm head right_arm"],
+        "symmetrically_armed_head": ["d( face )b", "(╯ face )╯", "(っ face ς)", "ᕕ( face )ᕗ", "(つ face )つ",
+            "ᕦ( face )ᕤ", "(づ face )づ"
+        ],
+        "face": ["^ mouth ^", "• mouth •", "o mouth o", "O mouth O", "> mouth <", "x mouth x",
+            "' mouth '", "; mouth ;", " ̿ mouth  ̿", "- mouth -", "* mouth *", "´ mouth ´",
+            "~ mouth ~", "• mouth <", "> mouth •", "ಠ mouth ಠ", "¬ mouth ¬", "￣ mouth ￣",
+            "ಥ mouth ಥ", "ʘ mouth ʘ", "◎  mouth ◎", "•́ mouth •̀", "T mouth T", "⌒ mouth ⌒",
+            " ˃̶ mouth ˂̶", "ര mouth ര", "⇀ mouth ⇀", "╥ mouth ╥", "´ mouth ´",
+            "˘ mouth ˘", "❛ mouth ❛", "৺ mouth ৺", "୨ mouth ୧", "눈 mouth 눈",
+            "° mouth °", "⌐■ mouth ■", "≖ mouth ≖", "•̀ mouth •́", "◕ mouth ◕", "⊙ mouth ☉",
+            "ᗒ mouth ᗕ", " ͒  mouth ͒  ", "´･ mouth ･`"
+        ],
+        "mouth": ["_", ".", "__", "д", "ω", "-", ",", "////", "皿", "益", "人",
+            "﹏", "ㅿ", "□", "ʖ", "ᴗ", "ㅂ", "▂", "ᴥ", "〜", "∀", "ﾛ",
+            "▿▿▿▿", "ヮ", "ڡ", "︿", "‸", "ϖ", "˫", "֊", "෴", "³", "ᗣ"
+        ],
+        "left_arm": ["\\", "c", "┗", "ヽ", "〜", "┌", "ヾ", "＼"],
+        "right_arm": ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧",
+            "乂 head ﾉ", "❤ head", "و"
+        ]
+    }, "kaomoji"), document.getElementById("howMany"), document.getElementById("display"));
 
     // Event binding
-    document.getElementById("generate").addEventListener("click", function () {
+    document.getElementById("generate").addEventListener("click", function() {
         displayer.display();
     });
 
     // Easter egg display for maximum value of the input field
-    document.getElementById("howMany").addEventListener("input", function () {
+    document.getElementById("howMany").addEventListener("input", function() {
         if (this.value == this.max) {
             document.getElementById("soManyMessage").style.display = "block";
         } else {

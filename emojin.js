@@ -73,16 +73,12 @@ class GrammarDisplayer {
     }
 
     display() {
-        this.clear();
-        debug(`Generating ${this.howMany()} strings`);
-        const strings = this.generator.generate(this.howMany());
-        debug(`Displaying the following strings: ${strings}`);
-        for (let i = 0; i < strings.length; i++) {
-            debug("----------------", 1);
+        var self = this;
+        this.generator.generate(this.howMany()).map((string) =>
             const li = document.createElement("li");
-            li.textContent = strings[i];
-            this.displayContainer.appendChild(li);
-        }
+            li.textContent = string;
+            self.displayContainer.appendChild(li);
+        );
     }
 
     howMany() {
@@ -104,26 +100,26 @@ function init() {
     // Configuration
     const displayer = new GrammarDisplayer(
         new Grammar({
-            "emoji" : ["eh" , "eu", "et" , "ef"],
-            "eh" : ["( ef )", "[ ef ]", "༼ ef  ༽"],
-            "eu": ["el eh er"],
-            "et" : ["d( ef )b", "(╯ ef )╯", "(っ ef ς)", "ᕕ( ef )ᕗ","(つ ef )つ",
-                    "ᕦ( ef )ᕤ", "(づ ef )づ"],
-            "ef" : ["^ em ^", "• em •", "o em o", "O em O", "> em <", "x em x",
-                    "' em '", "; em ;", " ̿ em  ̿", "- em -", "* em *", "´ em ´",
-                    "~ em ~", "• em <", "> em •", "ಠ em ಠ", "¬ em ¬", "￣ em ￣",
-                    "ಥ em ಥ", "ʘ em ʘ", "◎  em ◎", "•́ em •̀", "T em T", "⌒ em ⌒",
-                    " ˃̶ em ˂̶", "ര em ര", "⇀ em ⇀", "╥ em ╥", "´ em ´",
-                    "˘ em ˘", "❛ em ❛", "৺ em ৺", "୨ em ୧", "눈 em 눈",
-                    "° em °", "⌐■ em ■", "≖ em ≖", "•̀ em •́", "◕ em ◕", "⊙ em ☉",
-                    "ᗒ em ᗕ", " ͒  em ͒  ", "´･ em ･`"],
-            "em" : ["_", ".", "__", "д", "ω", "-", ",", "////", "皿", "益", "人",
+            "kaomoji" : ["head" , "bracketed_head", "symmetrically_armed_head" , "face"],
+            "head" : ["( face )", "[ face ]", "༼ face  ༽"],
+            "bracketed_head": ["left_arm head right_arm"],
+            "symmetrically_armed_head" : ["d( face )b", "(╯ face )╯", "(っ face ς)", "ᕕ( face )ᕗ","(つ face )つ",
+                    "ᕦ( face )ᕤ", "(づ face )づ"],
+            "face" : ["^ mouth ^", "• mouth •", "o mouth o", "O mouth O", "> mouth <", "x mouth x",
+                    "' mouth '", "; mouth ;", " ̿ mouth  ̿", "- mouth -", "* mouth *", "´ mouth ´",
+                    "~ mouth ~", "• mouth <", "> mouth •", "ಠ mouth ಠ", "¬ mouth ¬", "￣ mouth ￣",
+                    "ಥ mouth ಥ", "ʘ mouth ʘ", "◎  mouth ◎", "•́ mouth •̀", "T mouth T", "⌒ mouth ⌒",
+                    " ˃̶ mouth ˂̶", "ര mouth ര", "⇀ mouth ⇀", "╥ mouth ╥", "´ mouth ´",
+                    "˘ mouth ˘", "❛ mouth ❛", "৺ mouth ৺", "୨ mouth ୧", "눈 mouth 눈",
+                    "° mouth °", "⌐■ mouth ■", "≖ mouth ≖", "•̀ mouth •́", "◕ mouth ◕", "⊙ mouth ☉",
+                    "ᗒ mouth ᗕ", " ͒  mouth ͒  ", "´･ mouth ･`"],
+            "mouth" : ["_", ".", "__", "д", "ω", "-", ",", "////", "皿", "益", "人",
                     "﹏", "ㅿ", "□", "ʖ", "ᴗ", "ㅂ", "▂", "ᴥ", "〜", "∀", "ﾛ",
                     "▿▿▿▿", "ヮ", "ڡ", "︿", "‸", "ϖ", "˫", "֊", "෴", "³", "ᗣ"],
-            "el" : ["\\", "c", "┗", "ヽ", "〜", "┌", "ヾ", "＼"],
-            "er" : ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧",
-                    "乂 eh ﾉ", "❤ eh", "و"]
-        }, "emoji"),
+            "left_arm" : ["\\", "c", "┗", "ヽ", "〜", "┌", "ヾ", "＼"],
+            "right_arm" : ["/", "7", "~", "┛", "ﾉ", "〜", "┘", "⊃", "ง", "ゞ", "ﾉ*:･ﾟ✧",
+                    "乂 head ﾉ", "❤ head", "و"]
+        }, "kaomoji"),
         document.getElementById("howMany"),
         document.getElementById("display")
     );
