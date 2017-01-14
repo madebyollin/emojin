@@ -5,4 +5,4 @@ A simple client-side kaomoji generator using a context-free grammar.
 
 [Try it out](http://emojin.xyz/)
 
-I'm still learning a lot about Javascript.  Feedback is appreciated!
+I'm still learning a lot about JavaScript.  Feedback is appreciated!
